@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-05T11:18:55.931Z</updated>
+  <updated>2025-07-06T14:32:11.994Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>File.0x0003_Unity-自定义颜色和带有打字机的2D对话系统</title>
+    <link href="http://example.com/2025/07/06/File-0x0003-Unity-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A2%9C%E8%89%B2%E5%92%8C%E5%B8%A6%E6%9C%89%E6%89%93%E5%AD%97%E6%9C%BA%E7%9A%842D%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F/"/>
+    <id>http://example.com/2025/07/06/File-0x0003-Unity-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A2%9C%E8%89%B2%E5%92%8C%E5%B8%A6%E6%9C%89%E6%89%93%E5%AD%97%E6%9C%BA%E7%9A%842D%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F/</id>
+    <published>2025-07-06T13:55:07.000Z</published>
+    <updated>2025-07-06T14:32:11.994Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;打字机协程&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#打字机协程&quot;&gt;&lt;/a&gt; 打字机协程&lt;/h1&gt;
+&lt;p&gt;原理：for遍历全部需要显示的文字，间隔一定时间用string的Substring截取字符串赋值给text文本&lt;br</summary>
+        
+      
+    
+    
+    
+    <category term="Unity" scheme="http://example.com/categories/Unity/"/>
+    
+    
+    <category term="Unity2D" scheme="http://example.com/tags/Unity2D/"/>
+    
+  </entry>
   
   <entry>
     <title>File.0x0002_深搜-排列组合</title>
