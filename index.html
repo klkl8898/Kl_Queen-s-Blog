@@ -235,7 +235,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Post</div>
-    <div class="sidebar-state-number">3</div>
+    <div class="sidebar-state-number">4</div>
   </div>
   <div class="sidebar-state-category">
     <div>Category</div>
@@ -243,7 +243,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>Tag</div>
-    <div class="sidebar-state-number">3</div>
+    <div class="sidebar-state-number">4</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -333,16 +333,15 @@
     <div class="post-info">
       <div class="post-meta">
         <span><span class="icon-calendar"></span>2025-07-06</span>
-        <span><span class="icon-pencil"></span>1.6k words</span>
-        <span><span class="icon-clock"></span>7 mins</span>
+        <span><span class="icon-pencil"></span>303 words</span>
+        <span><span class="icon-clock"></span>1 min</span>
       </div>
       <h2 class="post-title">File.0x0003_Unity-自定义颜色和带有打字机的2D对话系统</h2>
       <article class="post-article">
         
-           打字机协程
-原理：for遍历全部需要显示的文字，间隔一定时间用string的Substring截取字符串赋值给text文本
-直接上代码
-1234567891011121314IEnumerator CallWord(string s, float time, bool Close = true)//s：需要显示的文字 time：间隔的时间 close：这些字显示完了要不要关闭文本框结束对话    &amp;#123;        text.text = &amp;quot;&amp;quot;; //初始化文本        for (int i = 0; i &amp;lt;= s.Length; i++)//遍历字符
+           对话数据SO
+首先创建一个存储对话数据的ScriptableObject，其中有四个数据：对话文本集合，打字机间隔时间集合，文本颜色数组，执行完这个对话后是否关闭对话框
+1234567891011121314using System.Collections;using System.Collections.Generic;using UnityEngine;[CreateAssetMenu(fileName = &amp;quot;DiaLog&amp;quot;, menuName = &amp;quot;UHM_Example/DiaLog&amp;quot;, order = 0)]public class DiaL
         
       </article>
     </div>
@@ -441,6 +440,50 @@ n个数字的全排列有n！（n的阶乘）个
 </div>
       
     
+      <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+      <a class="post-link" href="/2024/03/26/Unity%E7%AC%94%E8%AE%B0-json%E5%92%8Cxml/" aria-label="File-0x0004-Unity的Json和XML数据存储"></a>
+    
+    
+    <div class="post-cover-right">
+      
+        <img data-src="https://tse4-mm.cn.bing.net/th/id/OIP-C.Svx3axYrtqVsOxlRE3qkRQHaE8?rs=1&pid=ImgDetMain" data-sizes="auto" alt="File-0x0004-Unity的Json和XML数据存储" class="lazyload">
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-03-26</span>
+        <span><span class="icon-pencil"></span>5.2k words</span>
+        <span><span class="icon-clock"></span>22 mins</span>
+      </div>
+      <h2 class="post-title">File-0x0004-Unity的Json和XML数据存储</h2>
+      <article class="post-article">
+        
+           这篇文章是我从旧博客搬来的 某些内容可能已过时
+ 数据格式
+在一个公司里，老板给了员工A一些任务，叫员工A按时去完成这些任务。
+
+但这个员工A很健忘,经常忘记老板吩咐的任务。
+
+员工A为了防止这种情况再次发生，想出了一种办法：拿出一个小本本在上面按一定的格式记录下每次老板吩咐的任务。
+
+这样，员工A就不会再忘记工作了。
+
+在员工A记录任务时他所使用的固定格式，就叫做————
+
+ 数据格式-为什么需要数据格式
+以前在编写数据时，人们用空格隔开数据,以实现数据的分类，一碰上比较复杂的情况时，这种分隔方式就会遇到一种问题：
+
+这啥啊？
+由于数据的庞大与复杂，不仅人看不清楚，机器也看不懂这一坨究竟是
+        
+      </article>
+    </div>
+  </div>
+</div>
+      
+    
   
 
 
@@ -472,10 +515,10 @@ n个数字的全排列有n！（n的阶乘）个
     
       <div>
         <span class="icon-brush"></span>
-        2.5k
+        6.3k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        00:11
+        00:27
       </div>
     
     
@@ -511,7 +554,7 @@ n个数字的全排列有n！（n的阶乘）个
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Post</div>
-    <div class="sidebar-state-number">3</div>
+    <div class="sidebar-state-number">4</div>
   </div>
   <div class="sidebar-state-category">
     <div>Category</div>
@@ -519,7 +562,7 @@ n个数字的全排列有n！（n的阶乘）个
   </div>
   <div class="sidebar-state-tag">
     <div>Tag</div>
-    <div class="sidebar-state-number">3</div>
+    <div class="sidebar-state-number">4</div>
   </div>
 </div>
 <div class="sidebar-social">

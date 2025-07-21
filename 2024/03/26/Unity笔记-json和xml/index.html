@@ -1,0 +1,891 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  
+    
+      data-theme-mode="auto"
+    
+  >
+  <head>
+  
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'http://example.com';</script>
+  
+  <title>
+    File-0x0004-Unity的Json和XML数据存储 |
+    
+    Queen&#39;s Home
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="这篇文章是我从旧博客搬来的 某些内容可能已过时  数据格式 在一个公司里，老板给了员工A一些任务，叫员工A按时去完成这些任务。  但这个员工A很健忘,经常忘记老板吩咐的任务。  员工A为了防止这种情况再次发生，想出了一种办法：拿出一个小本本在上面按一定的格式记录下每次老板吩咐的任务。  这样，员工A就不会再忘记工作了。  在员工A记录任务时他所使用的固定格式，就叫做————   数据格式-为什么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="File-0x0004-Unity的Json和XML数据存储">
+<meta property="og:url" content="http://example.com/2024/03/26/Unity%E7%AC%94%E8%AE%B0-json%E5%92%8Cxml/index.html">
+<meta property="og:site_name" content="Queen&#39;s Home">
+<meta property="og:description" content="这篇文章是我从旧博客搬来的 某些内容可能已过时  数据格式 在一个公司里，老板给了员工A一些任务，叫员工A按时去完成这些任务。  但这个员工A很健忘,经常忘记老板吩咐的任务。  员工A为了防止这种情况再次发生，想出了一种办法：拿出一个小本本在上面按一定的格式记录下每次老板吩咐的任务。  这样，员工A就不会再忘记工作了。  在员工A记录任务时他所使用的固定格式，就叫做————   数据格式-为什么">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s21.ax1x.com/2024/05/05/pkAI4yR.png">
+<meta property="og:image" content="https://s21.ax1x.com/2024/05/05/pkAIRW4.png">
+<meta property="og:image" content="https://s21.ax1x.com/2024/05/05/pkAIfSJ.png">
+<meta property="og:image" content="https://s21.ax1x.com/2024/05/05/pkAIhl9.png">
+<meta property="og:image" content="https://s21.ax1x.com/2024/05/08/pkVBmGV.png">
+<meta property="og:image" content="https://s21.ax1x.com/2024/05/05/pkAoPk8.png">
+<meta property="og:image" content="https://www.freeimg.cn/i/2024/03/23/65fe7f862002d.png">
+<meta property="og:image" content="https://www.freeimg.cn/i/2024/03/24/65ffa04348531.png">
+<meta property="og:image" content="https://www.freeimg.cn/i/2024/03/24/65ffac460ac1f.png">
+<meta property="article:published_time" content="2024-03-26T11:36:01.000Z">
+<meta property="article:modified_time" content="2025-07-21T14:19:23.504Z">
+<meta property="article:author" content="Kl_Queen">
+<meta property="article:tag" content="Unity2D">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s21.ax1x.com/2024/05/05/pkAI4yR.png">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="Queen's Home" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/XIANG.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL&#x2F;toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx&#x2F;1oA&#x2F;0l8ysE" crossorigin="anonymous">
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css" integrity="sha384-4NN3fZ5AokFyHuoihl7A9qWaCt+HsAtOaUsXwJGRb4&#x2F;SMBtFr2vcNSHR5E8dg0Wk" crossorigin="anonymous">
+
+  
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      
+      
+        
+      
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon ">
+             
+              
+                <img src="/XIANG.png" alt="home icon" style="height: 1em;">
+              
+             
+          </div>
+          <a class="main-nav-link" href="/">Home</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon ">
+             
+              
+                <img src="/ANON.png" alt="archives icon" style="height: 1em;">
+              
+             
+          </div>
+          <a class="main-nav-link" href="/archives">Archives</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon ">
+             
+              
+                <img src="/SOYO.png" alt="about icon" style="height: 1em;">
+              
+             
+          </div>
+          <a class="main-nav-link" href="/about">About</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon ">
+             
+              
+                <img src="/NANA.png" alt="friend icon" style="height: 1em;">
+              
+             
+          </div>
+          <a class="main-nav-link" href="/friend">Friend</a>
+        </span>
+      
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" target="_blank"></a>
+    
+    
+    
+  </nav>
+  
+</div>
+<header id="header">
+  
+    <picture></picture>
+    <img crossorigin="anonymous" fetchpriority="high" src="https://tse4-mm.cn.bing.net/th/id/OIP-C.Svx3axYrtqVsOxlRE3qkRQHaE8?rs=1&pid=ImgDetMain" alt="File-0x0004-Unity的Json和XML数据存储">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">File-0x0004-Unity的Json和XML数据存储</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content"  class="sidebar-right" >
+          <aside id="sidebar">
+  
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        
+          <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E6%98%AF%E6%88%91%E4%BB%8E%E6%97%A7%E5%8D%9A%E5%AE%A2%E6%90%AC%E6%9D%A5%E7%9A%84-%E6%9F%90%E4%BA%9B%E5%86%85%E5%AE%B9%E5%8F%AF%E8%83%BD%E5%B7%B2%E8%BF%87%E6%97%B6"><span class="toc-number">1.</span> <span class="toc-text"> 这篇文章是我从旧博客搬来的 某些内容可能已过时</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="toc-number"></span> <span class="toc-text"> 数据格式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text"> 数据格式-为什么需要数据格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#json"><span class="toc-number">2.</span> <span class="toc-text"> JSON</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#json-%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE"><span class="toc-number">2.1.</span> <span class="toc-text"> Json-存储数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9json%E5%B7%A5%E5%85%B7"><span class="toc-number">2.2.</span> <span class="toc-text"> 第三方Json工具</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-number">2.2.1.</span> <span class="toc-text"> 优势</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%8E%E8%A7%A3%E6%9E%90-%E4%B8%80"><span class="toc-number">2.2.1.1.</span> <span class="toc-text"> 创建与解析 一</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA"><span class="toc-number">2.2.1.1.1.</span> <span class="toc-text"> 创建</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90"><span class="toc-number">2.2.1.1.2.</span> <span class="toc-text"> 解析</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%8E%E8%A7%A3%E6%9E%90-%E4%BA%8C"><span class="toc-number">2.2.1.2.</span> <span class="toc-text"> 创建与解析 二</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-2"><span class="toc-number">2.2.1.2.1.</span> <span class="toc-text"> 创建</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96"><span class="toc-number">2.2.1.2.2.</span> <span class="toc-text"> 读取</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xml%E8%A7%A3%E6%9E%90"><span class="toc-number">2.3.</span> <span class="toc-text"> XML解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xml%E8%A7%A3%E6%9E%90%E4%BA%8C"><span class="toc-number">2.4.</span> <span class="toc-text"> XML解析·二</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#xpath"><span class="toc-number">2.4.1.</span> <span class="toc-text"> XPath</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E5%B1%95rss"><span class="toc-number">2.4.2.</span> <span class="toc-text"> 拓展·RSS</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.gif" data-sizes="auto" alt="Kl_Queen" class="lazyload">
+  <div class="sidebar-author-name">Kl_Queen</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">3</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-icon icon ">
+          
+            
+              <img src="/XIANG.png" alt="home icon" style="width: 1em;">
+            
+          
+        </div>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-icon icon ">
+          
+            
+              <img src="/ANON.png" alt="archives icon" style="width: 1em;">
+            
+          
+        </div>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-icon icon ">
+          
+            
+              <img src="/SOYO.png" alt="about icon" style="width: 1em;">
+            
+          
+        </div>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-icon icon ">
+          
+            
+              <img src="/NANA.png" alt="friend icon" style="width: 1em;">
+            
+          
+        </div>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+    
+  
+</div>
+</div>
+        
+      
+      
+        
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+        
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+  
+  </div>
+  
+</aside>
+
+          <section id="main"><article id="post-Unity笔记-json和xml" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link" data-aos="zoom-in">
+    <time datetime="2024-03-26T11:36:01.000Z" itemprop="datePublished">2024-03-26</time>
+    <time style="display: none;" id="post-update-time">2025-07-21</time>
+  </span>
+</div>
+
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Unity/" data-aos="zoom-in">Unity</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h2 id="这篇文章是我从旧博客搬来的-某些内容可能已过时"><a class="markdownIt-Anchor" href="#这篇文章是我从旧博客搬来的-某些内容可能已过时"></a> 这篇文章是我从旧博客搬来的 某些内容可能已过时</h2>
+<h1 id="数据格式"><a class="markdownIt-Anchor" href="#数据格式"></a> 数据格式</h1>
+<p>在一个公司里，老板给了员工A一些任务，叫员工A按时去完成这些任务。<br />
+<img src="https://s21.ax1x.com/2024/05/05/pkAI4yR.png" alt="pkAI4yR.png" /><br />
+但这个员工A很<strong>健忘</strong>,经常忘记老板吩咐的任务。<br />
+<img src="https://s21.ax1x.com/2024/05/05/pkAIRW4.png" alt="" /><br />
+员工A为了防止这种情况再次发生，想出了一种办法：拿出一个<strong>小本本</strong>在上面<strong>按一定的格式记录下每次老板吩咐的任务。</strong><br />
+<img src="https://s21.ax1x.com/2024/05/05/pkAIfSJ.png" alt="" /><br />
+这样，员工A就不会再忘记工作了。<br />
+<img src="https://s21.ax1x.com/2024/05/05/pkAIhl9.png" alt="" /><br />
+在员工A记录任务时他所使用的<strong>固定格式</strong>，就叫做————<br />
+<img src="https://s21.ax1x.com/2024/05/08/pkVBmGV.png" alt="" /></p>
+<h2 id="数据格式-为什么需要数据格式"><a class="markdownIt-Anchor" href="#数据格式-为什么需要数据格式"></a> 数据格式-为什么需要数据格式</h2>
+<p>以前在编写数据时，人们<strong>用空格隔开数据</strong>,以实现数据的分类，一碰上比较复杂的情况时，这种分隔方式就会遇到一种问题：<br />
+<img src="https://s21.ax1x.com/2024/05/05/pkAoPk8.png" alt="" /><br />
+<strong>这啥啊？</strong><br />
+由于数据的庞大与复杂，不仅人看不清楚，机器也看不懂这一坨究竟是啥。<br />
+于是人们开始用<strong>逗号&quot;,&quot;<strong>分隔数据。这种用逗号分隔属性的格式叫做</strong>CSV格式</strong>。<br />
+office支持csv格式，可以读取xxx.csv。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//Name Id price</span><br><span class="line">   hexo   1   0</span><br><span class="line">   github 2  0</span><br></pre></td></tr></table></figure>
+<p>一些网游会出现包含逗号的语句数据，于是把分隔的逗号换成**|**这样能避免混淆，且看起来更像表格:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//Name Id price</span><br><span class="line">   hexo  | 1 | 0</span><br><span class="line">  github| 2 | 0</span><br></pre></td></tr></table></figure>
+<p>但这样依旧不够清晰，而且也不够统一，于是就出现了两种常用的格式：<strong>XML</strong>和<strong>Json</strong><br />
+玩游戏的观众想必知道：在游戏文件夹里，常常出现后缀是json和xml的文件，这些文件储存了游戏中<strong>需要存储的数据</strong>，方便下次使用。<br />
+游戏中需要储存的数据有背包物品，角色血量，关卡进度，怪物生成等，其中Json大多数存储的是游戏配置的数据（如怪物生成，Npc数据，游戏进度，背包内容），而XML可储存物品或玩家的数据（如角色面板，物品信息，大世界数据，怪物面板）我们先来看Json是什么样的：</p>
+<h2 id="json"><a class="markdownIt-Anchor" href="#json"></a> JSON</h2>
+<p>json是一种常用的数据格式，<strong>是数组+字典的嵌套</strong><br />
+这是一个简单的json：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">	<span class="attr">&quot;persons&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span>      </span><br><span class="line">			<span class="punctuation">&#123;</span>				</span><br><span class="line">			          			</span><br><span class="line">			<span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;project&quot;</span><span class="punctuation">,</span></span><br><span class="line">			<span class="attr">&quot;Id&quot;</span><span class="punctuation">:</span><span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">			<span class="attr">&quot;price&quot;</span><span class="punctuation">:</span><span class="number">0</span></span><br><span class="line">			<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">			<span class="punctuation">&#123;</span></span><br><span class="line">			<span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;sekai&quot;</span><span class="punctuation">,</span></span><br><span class="line">			<span class="attr">&quot;Id&quot;</span><span class="punctuation">:</span><span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">			<span class="attr">&quot;price&quot;</span><span class="punctuation">:</span><span class="number">0</span></span><br><span class="line">			<span class="punctuation">&#125;</span></span><br><span class="line">		<span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>我们来分析一下这段代码：<br />
+第一行有一个<strong>括号</strong>这是一个<strong>字典</strong>，所有数据都储存在这个字典中。<br />
+第二行是字典中的一个<strong>键值对</strong>，键是persons，值是一个包含字典的数组，也就是<strong>一个字典类型的数组</strong>。<br />
+第三行是一个括号，这是数组里的第一个字典。<br />
+之后写了三个键值对，表示这个字典里有三个元素，第二个字典同理。这就是这串json表达的信息。<br />
+可以看出，这个Json将这个类的数据通过<strong>字典+数组</strong>的格式存储在文件里，机器一看到后缀是json，就会想到<strong>哦！这是json数据格式！</strong>，便会用json&quot;字典+数组&quot;的格式来读取数据。</p>
+<p>在csharp（c#）里，<strong>json数组映射成c#数组，json字典映射为c#对象</strong></p>
+<h3 id="json-存储数据"><a class="markdownIt-Anchor" href="#json-存储数据"></a> Json-存储数据</h3>
+<p>在知道了Json的相关基础后，<strong>我们该如何去存储和读取json呢？</strong><br />
+对于json的读写操作，unity提供了一个十分方便的工具：<strong>JsonUtility</strong>,它在unity项目的工程包里，不需要任何插件来使用。<br />
+在上面的例子中，员工A记录任务时需要一支笔来记录。JsonUtility里也有担任这项任务的工具：ToJson。<br />
+ToJson返回的是一个json格式的字符串，<strong>它会将传入的对象转化成json</strong>（<strong>注意，现在只是拿到了json格式的数据，并没有写入！</strong>）<br />
+打开一个unity项目，在Assets下创建脚本JsonUtilityTest。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line">[<span class="meta">Serializable</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Person</span>&#123; <span class="comment">// 需要记录的类</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> name; <span class="comment">//需要记录的数据</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> id;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> price;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">JsonUtilityTest</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//用JsonUtility创建Json</span></span><br><span class="line">        Person person = <span class="keyword">new</span> Person(); <span class="comment">//创建json类的实例</span></span><br><span class="line">        person.name = <span class="string">&quot;hexo&quot;</span>; <span class="comment">//给数据赋值</span></span><br><span class="line">        person.id = <span class="number">1</span>;</span><br><span class="line">        person.price = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//转为json</span></span><br><span class="line">        <span class="built_in">string</span> jsonStr = JsonUtility.ToJson(person);<span class="comment">//ToJson:将对象转为json格式的字符串 相当于上面例子里的笔 ToJson接受一个对象，它会将这个对象转成json字符串</span></span><br><span class="line">        Debug.Log(jsonStr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Update is called once per frame</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>大家可能会注意到，在声明记录的类的上面，有一个[Serializable]标签，<strong>该标签表示这个类/字段/方法是可序列化的</strong>在本例中，<strong>它向unity表明类Person可以序列化为json</strong>,如果没有，unity可能无法将数据保存。<br />
+现在我们只是获取了一个json字符串，并没有将数据保存，我们可以这样做：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line">......</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//用JsonUtility创建Json</span></span><br><span class="line">        Person person = <span class="keyword">new</span> Person(); <span class="comment">//创建json类的实例</span></span><br><span class="line">        person.name = <span class="string">&quot;hexo&quot;</span>; <span class="comment">//给数据赋值</span></span><br><span class="line">        person.id = <span class="number">1</span>;</span><br><span class="line">        person.price = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//转为json</span></span><br><span class="line">        <span class="built_in">string</span> jsonStr = JsonUtility.ToJson(person);<span class="comment">//ToJson:将对象转为json格式的字符串 相当于上面例子里的笔 ToJson接受一个对象，它会将这个对象转成json字符串</span></span><br><span class="line">        File.WriteAllText(Application.streamingAssetsPath + <span class="string">&quot;/JsonTest.json&quot;</span>, jsonStr);<span class="comment">//写入文件操作</span></span><br><span class="line">        Debug.Log(jsonStr);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>在Assets文件夹下创建StreamingAssets文件夹，之后运行脚本，几秒后，会发现刚刚创建的文件夹下有一个JsonTest.json文件，里面包含着一个刚生成的字符串。<br />
+现在我们已经学会了如何用JsonUtility存储数据<br />
+例如：这是一个跑酷游戏，现在想将玩家进度存档：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line">[<span class="meta">Serialzable</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PlayerState</span>&#123;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">int</span> health;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">float</span> score;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">int</span> item;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">float</span> dis <span class="comment">//玩家跑出去的距离</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">JsonTest</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span>&#123;</span><br><span class="line"><span class="comment">//创建Json</span></span><br><span class="line">PlayerState player = <span class="keyword">new</span> PlayerState();</span><br><span class="line">player.health = 玩家目前生命值</span><br><span class="line">player.score = 玩家目前分数</span><br><span class="line">player.item = 玩家目前拾取物</span><br><span class="line">player.dis = 玩家目前跑出去的距离</span><br><span class="line"><span class="built_in">string</span> str = JsonUtility.ToJson(player);</span><br><span class="line">Debug.Log(str);</span><br></pre></td></tr></table></figure>
+<p>###FromJson(读档)<br />
+FromJson可以将Json字符串转化为对象。<br />
+格式：v = JsonUtility.FromJson&lt;要转化的对象类型(v的类型)&gt;(v);<br />
+<strong>注意：进行Json转化对象，对象必须可序列化([Serialzable])</strong><br />
+按照上面的跑酷例子，写出以下代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PlayerState players = JsonUtility.FromJson&lt;PlayerState&gt;(str);</span><br><span class="line">Debug.Log(players.name);</span><br></pre></td></tr></table></figure>
+<p>如果控制台输出角色名字，则说明代码正确</p>
+<h3 id="第三方json工具"><a class="markdownIt-Anchor" href="#第三方json工具"></a> 第三方Json工具</h3>
+<p>进入<a target="_blank" rel="noopener" href="https://link.jianshu.com?t=https://github.com/lbv/litjson/releases/download/v0.9.0/LitJson.dll">第三方工具dll文件下载</a>然后在你unity项目的根目录（Assets)新建Plugins文件夹，把dll文件拖进去。<br />
+拖进去后会显示一个拼图图标。<br />
+<img src="https://www.freeimg.cn/i/2024/03/23/65fe7f862002d.png" alt="LitJson.png" /></p>
+<h4 id="优势"><a class="markdownIt-Anchor" href="#优势"></a> 优势</h4>
+<ul>
+<li>LitJson在创建类时不需要加上**[Serializable]标签**</li>
+<li>LitJson有<strong>两种解析和创建Json的方式</strong></li>
+</ul>
+<h5 id="创建与解析-一"><a class="markdownIt-Anchor" href="#创建与解析-一"></a> 创建与解析 一</h5>
+<h6 id="创建"><a class="markdownIt-Anchor" href="#创建"></a> 创建</h6>
+<p>创建要用到LitJson里的<strong>JsonMapper类</strong>里的ToJson方法：<br />
+创建LitJsons脚本(注意脚本不要和<strong>LitJson重名</strong>，在里面导入命名空间：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> LitJson;</span><br></pre></td></tr></table></figure>
+<p>然后编写代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        fun1();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun1</span>()</span>&#123;</span><br><span class="line">        JsonTest jsontest1 = <span class="keyword">new</span> JsonTest();</span><br><span class="line">            jsontest1.name = <span class="string">&quot;小明&quot;</span>;</span><br><span class="line">            jsontest1.age = <span class="number">11</span>;</span><br><span class="line">        JsonTest jsontest2 = <span class="keyword">new</span> JsonTest();</span><br><span class="line">            jsontest2.name = <span class="string">&quot;小红&quot;</span>;</span><br><span class="line">            jsontest2.age = <span class="number">10</span>;</span><br><span class="line">        JsonList jsonlist = <span class="keyword">new</span> JsonList();</span><br><span class="line">        jsonlist.jsonlist = <span class="keyword">new</span> JsonTest[]&#123;jsontest1,jsontest2&#125;;</span><br><span class="line">        <span class="built_in">string</span> jsonstr = JsonMapper.ToJson(jsonlist);</span><br><span class="line">        Debug.Log(jsonstr);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>创建空对象LitJson，将脚本挂载到对象上，运行，显示<br />
+{“jsonlist”:[{“name”:“\u5C0F\u660E”,“age”:11},{“name”:“\u5C0F\u7EA2”,“age”:10}]}<br />
+Json字符串的一些位置出现了一些乱码，<strong>这是因为LitJson将中文转成了Unicode编码</strong>。但这样的Json仍然可以直接使用，不影响效果。如果想知道这些Unicode究竟是什么，可以试着搜索网站，将Unicode转成中文。</p>
+<h6 id="解析"><a class="markdownIt-Anchor" href="#解析"></a> 解析</h6>
+<p>解析使用JsonMapper里的<strong>ToObject方法</strong>:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun1</span>()</span>&#123;</span><br><span class="line">        JsonTest jsontest1 = <span class="keyword">new</span> JsonTest();</span><br><span class="line">            jsontest1.name = <span class="string">&quot;小明&quot;</span>;</span><br><span class="line">            jsontest1.age = <span class="number">11</span>;</span><br><span class="line">        JsonTest jsontest2 = <span class="keyword">new</span> JsonTest();</span><br><span class="line">            jsontest2.name = <span class="string">&quot;小红&quot;</span>;</span><br><span class="line">            jsontest2.age = <span class="number">10</span>;</span><br><span class="line">        JsonList jsonlist = <span class="keyword">new</span> JsonList();</span><br><span class="line">        jsonlist.jsonlist = <span class="keyword">new</span> JsonTest[]&#123;jsontest1,jsontest2&#125;;</span><br><span class="line">        <span class="built_in">string</span> jsonstr = JsonMapper.ToJson(jsonlist);</span><br><span class="line">        Debug.Log(jsonstr);</span><br><span class="line">        <span class="comment">//解析</span></span><br><span class="line">        JsonList listobject = JsonMapper.ToObject&lt;JsonList&gt;(jsonstr);</span><br><span class="line">        Debug.Log(listobject.jsonlist[<span class="number">0</span>].name);<span class="comment">//小明</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>这次，控制台打印出了&quot;小明&quot;二字，再次说明<strong>Unicode编码不影响实际效果</strong></p>
+<h5 id="创建与解析-二"><a class="markdownIt-Anchor" href="#创建与解析-二"></a> 创建与解析 二</h5>
+<p>这种Json创建方法不再依靠指定的类，而是使用一个<strong>JsonData</strong>类表示Json中各种类型</p>
+<h6 id="创建-2"><a class="markdownIt-Anchor" href="#创建-2"></a> 创建</h6>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span>&#123;</span><br><span class="line">fun2();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun2</span>()</span>&#123;</span><br><span class="line">            JsonData jd1 = <span class="keyword">new</span> JsonData();</span><br><span class="line">            jd1.SetJsonType(JsonType.Object);<span class="comment">//一般常用的是JsonType.Array(数组，Json中的中括号)和JsonType.Object(字典，Json中的大括号)</span></span><br><span class="line">            <span class="comment">//上句话不写也行，JsonData可以自动解析当前类型</span></span><br><span class="line">            jd1[<span class="string">&quot;name&quot;</span>] = <span class="string">&quot;小明&quot;</span>;<span class="comment">//JsonData自动推断类型，只要写属性名和属性值</span></span><br><span class="line">            jd1[<span class="string">&quot;age&quot;</span>] = <span class="number">11</span>;</span><br><span class="line">                Debug.Log(jd1.ToJson());<span class="comment">//直接用ToJson转化成Json</span></span><br><span class="line"></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>最后控制台打印<br />
+{“name”:“\u5C0F\u660E”,“age”:11}<br />
+这样，我们可以实现刚才的样例：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun2</span>()</span>&#123;</span><br><span class="line">            <span class="function"><span class="keyword">void</span> <span class="title">fun2</span>()</span>&#123;</span><br><span class="line">            JsonData jd1 = <span class="keyword">new</span> JsonData();</span><br><span class="line">            jd1.SetJsonType(JsonType.Object);<span class="comment">//一般常用的是JsonType.Array(数组，Json中的中括号)和JsonType.Object(字典，Json中的大括号)</span></span><br><span class="line">            <span class="comment">//上句话不写也行，JsonData可以自动解析当前类型</span></span><br><span class="line">            jd1[<span class="string">&quot;name&quot;</span>] = <span class="string">&quot;小明&quot;</span>;<span class="comment">//JsonData自动推断类型，只要写属性名和属性值</span></span><br><span class="line">            jd1[<span class="string">&quot;age&quot;</span>] = <span class="number">11</span>;</span><br><span class="line">            <span class="comment">//Debug.Log(jd1.ToJson());直接用ToJson转化成Json</span></span><br><span class="line">            JsonData jd2 = <span class="keyword">new</span> JsonData();</span><br><span class="line">            jd2.SetJsonType(JsonType.Object);</span><br><span class="line">            jd2[<span class="string">&quot;name&quot;</span>] = <span class="string">&quot;小红&quot;</span>;</span><br><span class="line">            jd2[<span class="string">&quot;age&quot;</span>] = <span class="number">10</span>;</span><br><span class="line">            JsonData jds = <span class="keyword">new</span> JsonData();</span><br><span class="line">            jds.SetJsonType(JsonType.Array);<span class="comment">//储存两个对象，使用Array类型</span></span><br><span class="line">            jds.Add(jd1);<span class="comment">//添加数组元素</span></span><br><span class="line">            jds.Add(jd2);</span><br><span class="line">            JsonData jd3 = <span class="keyword">new</span> JsonData();<span class="comment">//最外层的大括号</span></span><br><span class="line">            jd3.SetJsonType(JsonType.Object);</span><br><span class="line">            jd3[<span class="string">&quot;List&quot;</span>] = jds;</span><br><span class="line">            Debug.Log(jd3.ToJson());</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>控制台显示<br />
+{“List”:[{“name”:“\u5C0F\u660E”,“age”:11},{“name”:“\u5C0F\u7EA2”,“age”:10}]}</p>
+<h6 id="读取"><a class="markdownIt-Anchor" href="#读取"></a> 读取</h6>
+<p>读取的方式是先创建Json字符串，然后解析成JsonData类，获取最外层的大括号，然后遍历获取属性</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun2</span>()</span>&#123;</span><br><span class="line">            JsonData jd1 = <span class="keyword">new</span> JsonData();</span><br><span class="line">            jd1.SetJsonType(JsonType.Object);<span class="comment">//一般常用的是JsonType.Array(数组，Json中的中括号)和JsonType.Object(字典，Json中的大括号)</span></span><br><span class="line">            <span class="comment">//上句话不写也行，JsonData可以自动解析当前类型</span></span><br><span class="line">            jd1[<span class="string">&quot;name&quot;</span>] = <span class="string">&quot;小明&quot;</span>;<span class="comment">//JsonData自动推断类型，只要写属性名和属性值</span></span><br><span class="line">            jd1[<span class="string">&quot;age&quot;</span>] = <span class="number">11</span>;</span><br><span class="line">            <span class="comment">//Debug.Log(jd1.ToJson());直接用ToJson转化成Json</span></span><br><span class="line">            JsonData jd2 = <span class="keyword">new</span> JsonData();</span><br><span class="line">            jd2.SetJsonType(JsonType.Object);</span><br><span class="line">            jd2[<span class="string">&quot;name&quot;</span>] = <span class="string">&quot;小红&quot;</span>;</span><br><span class="line">            jd2[<span class="string">&quot;age&quot;</span>] = <span class="number">10</span>;</span><br><span class="line">            JsonData jds = <span class="keyword">new</span> JsonData();</span><br><span class="line">            jds.SetJsonType(JsonType.Array);<span class="comment">//储存两个对象，使用Array类型</span></span><br><span class="line">            jds.Add(jd1);<span class="comment">//添加数组元素</span></span><br><span class="line">            jds.Add(jd2);</span><br><span class="line">            JsonData jd3 = <span class="keyword">new</span> JsonData();<span class="comment">//最外层的大括号</span></span><br><span class="line">            jd3.SetJsonType(JsonType.Object);</span><br><span class="line">            jd3[<span class="string">&quot;List&quot;</span>] = jds;</span><br><span class="line">            Debug.Log(jd3.ToJson());</span><br><span class="line">            <span class="comment">//解析</span></span><br><span class="line">            <span class="built_in">string</span> jsonstr = jd3.ToJson();<span class="comment">//提取Json字符串</span></span><br><span class="line">            JsonData jsons3D = JsonMapper.ToObject(jsonstr);<span class="comment">//解析不需要限制泛型，因为类型都是JsonData</span></span><br><span class="line">            JsonData jd4 = jsons3D[<span class="string">&quot;List&quot;</span>];<span class="comment">//最外层的大括号</span></span><br><span class="line">            <span class="keyword">foreach</span>(JsonData js <span class="keyword">in</span> jd4)&#123;</span><br><span class="line">                Debug.Log(js[<span class="string">&quot;name&quot;</span>].ToString()+ <span class="string">&quot; &quot;</span>+(<span class="built_in">int</span>)js[<span class="string">&quot;age&quot;</span>]);<span class="comment">//里面的属性都是JsonData类型，所以需要转型</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>控制台输出：<br />
+小明 11<br />
+小红 10<br />
+完整代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> LitJson;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">JsonTest</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">JsonList</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> JsonTest[] jsonlist;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LitJsons</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Start is called before the first frame update</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        fun1();</span><br><span class="line">        fun2();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun1</span>()</span>&#123;</span><br><span class="line">        JsonTest jsontest1 = <span class="keyword">new</span> JsonTest();</span><br><span class="line">            jsontest1.name = <span class="string">&quot;小明&quot;</span>;</span><br><span class="line">            jsontest1.age = <span class="number">11</span>;</span><br><span class="line">        JsonTest jsontest2 = <span class="keyword">new</span> JsonTest();</span><br><span class="line">            jsontest2.name = <span class="string">&quot;小红&quot;</span>;</span><br><span class="line">            jsontest2.age = <span class="number">10</span>;</span><br><span class="line">        JsonList jsonlist = <span class="keyword">new</span> JsonList();</span><br><span class="line">        jsonlist.jsonlist = <span class="keyword">new</span> JsonTest[]&#123;jsontest1,jsontest2&#125;;</span><br><span class="line">        <span class="built_in">string</span> jsonstr = JsonMapper.ToJson(jsonlist);</span><br><span class="line">        Debug.Log(jsonstr);</span><br><span class="line">        <span class="comment">//解析</span></span><br><span class="line">        JsonList listobject = JsonMapper.ToObject&lt;JsonList&gt;(jsonstr);</span><br><span class="line">        Debug.Log(listobject.jsonlist[<span class="number">0</span>].name);<span class="comment">//小明</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">fun2</span>()</span>&#123;</span><br><span class="line">            JsonData jd1 = <span class="keyword">new</span> JsonData();</span><br><span class="line">            jd1.SetJsonType(JsonType.Object);<span class="comment">//一般常用的是JsonType.Array(数组，Json中的中括号)和JsonType.Object(字典，Json中的大括号)</span></span><br><span class="line">            <span class="comment">//上句话不写也行，JsonData可以自动解析当前类型</span></span><br><span class="line">            jd1[<span class="string">&quot;name&quot;</span>] = <span class="string">&quot;小明&quot;</span>;<span class="comment">//JsonData自动推断类型，只要写属性名和属性值</span></span><br><span class="line">            jd1[<span class="string">&quot;age&quot;</span>] = <span class="number">11</span>;</span><br><span class="line">            <span class="comment">//Debug.Log(jd1.ToJson());直接用ToJson转化成Json</span></span><br><span class="line">            JsonData jd2 = <span class="keyword">new</span> JsonData();</span><br><span class="line">            jd2.SetJsonType(JsonType.Object);</span><br><span class="line">            jd2[<span class="string">&quot;name&quot;</span>] = <span class="string">&quot;小红&quot;</span>;</span><br><span class="line">            jd2[<span class="string">&quot;age&quot;</span>] = <span class="number">10</span>;</span><br><span class="line">            JsonData jds = <span class="keyword">new</span> JsonData();</span><br><span class="line">            jds.SetJsonType(JsonType.Array);<span class="comment">//储存两个对象，使用Array类型</span></span><br><span class="line">            jds.Add(jd1);<span class="comment">//添加数组元素</span></span><br><span class="line">            jds.Add(jd2);</span><br><span class="line">            JsonData jd3 = <span class="keyword">new</span> JsonData();<span class="comment">//最外层的大括号</span></span><br><span class="line">            jd3.SetJsonType(JsonType.Object);</span><br><span class="line">            jd3[<span class="string">&quot;List&quot;</span>] = jds;</span><br><span class="line">            Debug.Log(jd3.ToJson());</span><br><span class="line">            <span class="comment">//解析</span></span><br><span class="line">            <span class="built_in">string</span> jsonstr = jd3.ToJson();<span class="comment">//提取Json字符串</span></span><br><span class="line">            JsonData jsons3D = JsonMapper.ToObject(jsonstr);<span class="comment">//解析不需要限制泛型，因为类型都是JsonData</span></span><br><span class="line">            JsonData jd4 = jsons3D[<span class="string">&quot;List&quot;</span>];<span class="comment">//最外层的大括号</span></span><br><span class="line">            <span class="keyword">foreach</span>(JsonData js <span class="keyword">in</span> jd4)&#123;</span><br><span class="line">                Debug.Log(js[<span class="string">&quot;name&quot;</span>].ToString()+ <span class="string">&quot; &quot;</span>+(<span class="built_in">int</span>)js[<span class="string">&quot;age&quot;</span>]);<span class="comment">//里面的属性都是JsonData类型，所以需要转型</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>##XML<br />
+XML的格式和HTML很像，有一个节点（如<name>)和一个与之对应的节点(如</name>)，如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>&quot;小明&quot;<span class="tag">&lt;/<span class="name">name</span>&gt;</span> //节点名称 name 节点值 &quot;小明&quot;</span><br></pre></td></tr></table></figure>
+<p>一对节点里还可以包含其他节点，如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span>&quot;小明&quot;<span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">name</span>&gt;</span> //正确格式</span><br><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>&quot;小&quot;<span class="tag">&lt;<span class="name">p</span>&gt;</span>&quot;明&quot;<span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">name</span>&gt;</span>//错误格式</span><br></pre></td></tr></table></figure>
+<p><strong>节点只能包含节点或值，不能两者同时包含</strong><br />
+有时候节点不够用，于是XML还有属性：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">name</span> <span class="attr">id</span>=<span class="string">&quot;1&quot;</span>&gt;</span>&quot;小红&quot;<span class="tag">&lt;/<span class="name">name</span>&gt;</span>//name后面的id就是节点的属性，**属性必须以键值对格式出现，并且属性值必须加上双引号&quot;&quot;**，一个节点可以有多个属性</span><br></pre></td></tr></table></figure>
+<p>如果遇到只有属性值没有节点值的时候，可以简写，格式如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//未简写的格式：</span><br><span class="line"><span class="tag">&lt;<span class="name">name</span> <span class="attr">id</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">//简写后：</span><br><span class="line"><span class="tag">&lt;<span class="name">name</span> <span class="attr">id</span>=<span class="string">&quot;1&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在Assets文件夹下创建一个新的xml文档，命名为test.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span><span class="comment">&lt;!--声明文档类型和版本，编码--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--第一个节点叫做根节点--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span><span class="comment">&lt;!--root为根节点，根节点只能有一个，不允许根节点外还有其他节点--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">books</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">story</span> <span class="attr">id</span>=<span class="string">&quot;1&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>&quot;北京的春节&quot;<span class="tag">&lt;<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">story</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">story</span> <span class="attr">id</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="comment">&lt;!--同一层级下，节点名字可以重复--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>&quot;腊八粥&quot;<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">story</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">story</span> <span class="attr">id</span>=<span class="string">&quot;3&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>&quot;藏戏&quot;<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">story</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">books</span>&gt;</span><span class="comment">&lt;!--根节点root下的books节点包含三个story节点--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="xml解析"><a class="markdownIt-Anchor" href="#xml解析"></a> XML解析</h3>
+<p>创建XMLTest脚本，添加命名空间：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Xml;<span class="comment">//引用XML命名空间</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Xml;<span class="comment">//引用XML命名空间</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">XMLTest</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Start is called before the first frame update</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//解析XML</span></span><br><span class="line">        ParseXML();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Update is called once per frame</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ParseXML</span>()</span>&#123;</span><br><span class="line">        <span class="comment">//解析XML-1</span></span><br><span class="line">        <span class="comment">//XML文档类</span></span><br><span class="line">        XmlDocument doc = <span class="keyword">new</span> XmlDocument();</span><br><span class="line">        <span class="comment">//读取XML文件</span></span><br><span class="line">        doc.Load(Application.dataPath + <span class="string">&quot;/XML/test.xml&quot;</span>);<span class="comment">//读取XML文件 dataPath:游戏数据文件夹（Assets)</span></span><br><span class="line">        <span class="comment">//解析</span></span><br><span class="line">        XmlElement rootEle = doc.LastChild <span class="keyword">as</span> XmlElement;</span><br><span class="line"><span class="comment">//XmlElement类是XML元素类，用他获取XML最后一个节点（LastChild是获取XML最后一个节点，也就是根节点)再转成它的父类（LastChild返回值是XMLNode，是XmlElement的父类，子类通常比父类拥有更多属性，所以直接转成XmlElement类</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//books节点</span></span><br><span class="line">        XmlElement booksEle = rootEle.FirstChild <span class="keyword">as</span> XmlElement;</span><br><span class="line">        <span class="comment">//通过FirstChild获取root下的第一个节点（其实LastChild也行），也就是books节点</span></span><br><span class="line">        <span class="comment">//遍历story节点</span></span><br><span class="line">        <span class="keyword">foreach</span>(XmlElement storyEle <span class="keyword">in</span> booksEle.ChildNodes)&#123;<span class="comment">//ChildNodes:该节点下的所有节点</span></span><br><span class="line">        <span class="comment">//获取id</span></span><br><span class="line">            <span class="built_in">string</span> id = storyEle.GetAttribute(<span class="string">&quot;id&quot;</span>);<span class="comment">//GetAttribute:获取指定属性（id）</span></span><br><span class="line">            <span class="built_in">string</span> name = storyEle.ChildNodes[<span class="number">0</span>].InnerText;<span class="comment">//节点下的第一个节点，也可以用FirstChild InnerText:节点的值</span></span><br><span class="line">            Debug.Log(name + <span class="string">&quot; &quot;</span> + id);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//在进行如上操作时，注意XML文件必须没有注释！</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意！在解析时，不要在XML文件里添加任何注释或其他类型的东西！比如：注释类型为System.Xml.Comment，在转化成XmlElement时，FirstChild检测到的是注释！所以会报NullReferenceException，而在遍历节点时也会NullReferenceException，所以尽量不要使用注释！</strong><br />
+必要时，可以采用如下方案：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">foreach</span>(<span class="built_in">object</span> storyEle <span class="keyword">in</span> booksEle.ChildNotes)&#123;</span><br><span class="line">    <span class="keyword">if</span>(stroyEle == <span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//进行获取操作...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印XML结果：<br />
+<img src="https://www.freeimg.cn/i/2024/03/24/65ffa04348531.png" alt="XML" /></p>
+<h3 id="xml解析二"><a class="markdownIt-Anchor" href="#xml解析二"></a> XML解析·二</h3>
+<h4 id="xpath"><a class="markdownIt-Anchor" href="#xpath"></a> XPath</h4>
+<p>XPath是一种<strong>路径语法</strong>,拿test.xml举例，XPath语法下的test.xml路径如下：<br />
+<strong>root/books/story/name</strong><br />
+第二种方法依靠的就是XPath语法，内容如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParseXML2</span>()</span>&#123;</span><br><span class="line">        <span class="comment">//创建xml文档类</span></span><br><span class="line">        XmlDocument doc = <span class="keyword">new</span> XmlDocument();</span><br><span class="line">        doc.Load(Application.dataPath + <span class="string">&quot;/XML/test.xml&quot;</span>);</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        XPath:</span></span><br><span class="line"><span class="comment">        路径语法：</span></span><br><span class="line"><span class="comment">        例如：</span></span><br><span class="line"><span class="comment">        /root/books/story/name</span></span><br><span class="line"><span class="comment">        相对路径： //name 直接存放name节点</span></span><br><span class="line"><span class="comment">        结合：</span></span><br><span class="line"><span class="comment">        //books/story/name 通过相对路径找到books，再通过绝对路径找到name</span></span><br><span class="line"><span class="comment">         寻找单个节点：</span></span><br><span class="line"><span class="comment">        //booke/story[2]/name 找到第二个story节点下的name</span></span><br><span class="line"><span class="comment">        //books/story[last()-1]/name 找到倒数第二个story节点下的name</span></span><br><span class="line"><span class="comment">        //books/story[position()&lt;3]/name 获取前两个story节点下的name</span></span><br><span class="line"><span class="comment">        寻找拥有指定属性的节点：</span></span><br><span class="line"><span class="comment">        //books/story[@id]/name 只获取有id属性的story节点下的name</span></span><br><span class="line"><span class="comment">        寻找拥有指定id值的节点：</span></span><br><span class="line"><span class="comment">        //books/story[@id=2]/name 只获取有id属性且id值为2的story节点下的name</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        XmlNodeList list = doc.SelectNodes(<span class="string">&quot;/root/books/story/name&quot;</span>);</span><br><span class="line">        <span class="comment">//XmlNodeList list = doc.SelectNodes(&quot;//name&quot;);</span></span><br><span class="line">        <span class="comment">//doc.SelectNodes返回符合XPath路径的所有节点，存放在list列表里</span></span><br><span class="line">        <span class="keyword">foreach</span>(XmlElement ele <span class="keyword">in</span> list)&#123;<span class="comment">//遍历列表</span></span><br><span class="line">            Debug.Log(ele.InnerText);<span class="comment">//返回节点值</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre><code>运行结果：
+![XPath](https://www.freeimg.cn/i/2024/03/24/65ffa32e88fc2.png)
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    XPath:</span></span><br><span class="line"><span class="comment">    路径语法：</span></span><br><span class="line"><span class="comment">    例如：</span></span><br><span class="line"><span class="comment">    /root/books/story/name</span></span><br><span class="line"><span class="comment">    相对路径： //name 直接存放name节点</span></span><br><span class="line"><span class="comment">    结合：</span></span><br><span class="line"><span class="comment">    //books/story/name 通过相对路径找到books，再通过绝对路径找到name</span></span><br><span class="line"><span class="comment">     寻找单个节点：</span></span><br><span class="line"><span class="comment">    //booke/story[2]/name 找到第二个story节点下的name</span></span><br><span class="line"><span class="comment">    //books/story[last()-1]/name 找到倒数第二个story节点下的name</span></span><br><span class="line"><span class="comment">    //books/story[position()&lt;3]/name 获取前两个story节点下的name</span></span><br><span class="line"><span class="comment">    寻找拥有指定属性的节点：</span></span><br><span class="line"><span class="comment">    //books/story[@id]/name 只获取有id属性的story节点下的name</span></span><br><span class="line"><span class="comment">    寻找拥有指定id值的节点：</span></span><br><span class="line"><span class="comment">    //books/story[@id=2]/name 只获取有id属性且id值为2的story节点下的name</span></span><br><span class="line"><span class="comment">    */</span></span><br></pre></td></tr></table></figure>
+    ### xml创建
+    <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">CreateXML</span>()</span>&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 创建XML</span></span><br><span class="line">    <span class="comment">//创建文档类</span></span><br><span class="line">    XmlDocument doc = <span class="keyword">new</span> XmlDocument();</span><br><span class="line">    <span class="comment">//创建文档声明</span></span><br><span class="line">    XmlDeclaration dec = doc.CreateXmlDeclaration(<span class="string">&quot;1.0&quot;</span>,<span class="string">&quot;utf-8&quot;</span>,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="comment">//文档声明类 XmlDeclaration 用文档类的CreateXmlDeclaration方法创建文档声明</span></span><br><span class="line">    doc.AppendChild(dec);<span class="comment">//把文档声明添加到文档里</span></span><br><span class="line">    <span class="comment">//root节点</span></span><br><span class="line">    XmlElement rootEle = doc.CreateElement(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">    <span class="comment">//用文档类的CreateElement方法创建root元素</span></span><br><span class="line">    doc.AppendChild(rootEle);<span class="comment">//把root添加到文档里</span></span><br><span class="line">    <span class="comment">//books节点</span></span><br><span class="line">    XmlElement booksEle = doc.CreateElement(<span class="string">&quot;books&quot;</span>);</span><br><span class="line">    rootEle.AppendChild(booksEle);<span class="comment">//把books节点添加到root节点里</span></span><br><span class="line">    <span class="comment">//循环数据(name)</span></span><br><span class="line">    <span class="built_in">string</span>[] names = <span class="keyword">new</span> <span class="built_in">string</span>[]&#123;<span class="string">&quot;北京的春节&quot;</span>,<span class="string">&quot;腊八粥&quot;</span>,<span class="string">&quot;藏戏&quot;</span>&#125;;</span><br><span class="line">    <span class="comment">//循环创建节点</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)&#123;</span><br><span class="line">        XmlElement storyele = doc.CreateElement(<span class="string">&quot;story&quot;</span>);</span><br><span class="line">        booksEle.AppendChild(storyele);</span><br><span class="line">        <span class="comment">//name节点</span></span><br><span class="line">        XmlElement nameEle = doc.CreateElement(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">        nameEle.InnerText = names[i];<span class="comment">//赋值</span></span><br><span class="line">        storyele.AppendChild(nameEle);</span><br><span class="line">        <span class="comment">//添加属性</span></span><br><span class="line">        storyele.SetAttribute(<span class="string">&quot;id&quot;</span>,i+ <span class="string">&quot;&quot;</span>);<span class="comment">//添加属性，属性名：id，值：i 属性值必须是字符串</span></span><br><span class="line">        <span class="comment">/*创建属性方法2：</span></span><br><span class="line"><span class="comment">        XmlAttribute att = doc.CreateAttribute(&quot;id&quot;);//创建id属性</span></span><br><span class="line"><span class="comment">        att.value = i + &quot;&quot;;//属性值为i,属性值必须是字符串</span></span><br><span class="line"><span class="comment">        storyEle.Attrbutes.Append(att);//添加属性至story</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="comment">//保存xml文件</span></span><br><span class="line">    doc.Save(Application.dataPath + <span class="string">&quot;/XML/test2.xml&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+保存后运行，几秒后Assets下的XML文件夹会出现test2.xml文件，文件内容如下：
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">books</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">story</span> <span class="attr">id</span>=<span class="string">&quot;0&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>北京的春节<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">story</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">story</span> <span class="attr">id</span>=<span class="string">&quot;1&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>腊八粥<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">story</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">story</span> <span class="attr">id</span>=<span class="string">&quot;2&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>藏戏<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">story</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">books</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</code></pre>
+<p><img src="https://www.freeimg.cn/i/2024/03/24/65ffac460ac1f.png" alt="XML保存" /><br />
+生成的与编写的XML文件<strong>大致一样</strong></p>
+<h4 id="拓展rss"><a class="markdownIt-Anchor" href="#拓展rss"></a> 拓展·RSS</h4>
+<p>RSS:<strong>简易信息聚合</strong>（也叫聚合内容）是一种<strong>基于XML的标准</strong>，<strong>在互联网上被广泛采用的内容包装和投递协议</strong>。RSS(Really Simple Syndication)是一种描述和同步网站内容的格式，是使用最<strong>广泛</strong>的XML应用。RSS<strong>搭建了信息迅速传播的一个技术平台</strong>，使得每个人都成为潜在的信息提供者。<strong>发布一个RSS文件后，这个RSS Feed中包含的信息就能直接被其他站点调用</strong>，而且由于这些数据都是标准的XML格式，所以也能在其他的终端和服务中使用，是一种描述和同步网站内容的格式。 [1]RSS可以是以下三个解释的其中一个： Really Simple Syndication；RDF (Resource Description Framework) Site Summary； Rich Site Summary。但其实这三个解释都是指同一种Syndication的技术。<br />
+RSS<strong>广泛用于网上新闻频道，blog和wiki，主要的版本有0.91, 1.0, 2.0。使用RSS订阅能更快地获取信息，网站提供RSS输出，有利于让用户获取网站内容的最新更新。网络用户可以在客户端借助于支持RSS的聚合工具软件，在不打开网站内容页面的情况下阅读支持RSS输出的网站内容</strong>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/Unity2D/" rel="tag">Unity2D</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+      
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          <img data-src="https://tc.z.wiki/autoupload/f/fuaMVbgVWIrwTCzmFqZNP412_FRYNb81z6UPhMWD8iI/20250705/kHnz/2000X1234/bg.jpg" data-sizes="auto" alt="File.0x0001_新的开始" class="lazyload">
+        
+        <a href="/2025/07/02/File-0x0001-%E6%96%B0%E7%9A%84%E5%BC%80%E5%A7%8B/"></a>
+        <div class="article-nav-caption">Newer</div>
+        <h3 class="article-nav-title">
+          
+            File.0x0001_新的开始
+          
+        </h3>
+      </div>
+    
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+
+
+
+
+</section>
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      
+      
+      
+        2020-2025
+      
+      <span class="footer-info-sep rotate"></span>
+      Kl_Queen
+    </div>
+    
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        6.3k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        00:27
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E6%98%AF%E6%88%91%E4%BB%8E%E6%97%A7%E5%8D%9A%E5%AE%A2%E6%90%AC%E6%9D%A5%E7%9A%84-%E6%9F%90%E4%BA%9B%E5%86%85%E5%AE%B9%E5%8F%AF%E8%83%BD%E5%B7%B2%E8%BF%87%E6%97%B6"><span class="toc-number">1.</span> <span class="toc-text"> 这篇文章是我从旧博客搬来的 某些内容可能已过时</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="toc-number"></span> <span class="toc-text"> 数据格式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text"> 数据格式-为什么需要数据格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#json"><span class="toc-number">2.</span> <span class="toc-text"> JSON</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#json-%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE"><span class="toc-number">2.1.</span> <span class="toc-text"> Json-存储数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9json%E5%B7%A5%E5%85%B7"><span class="toc-number">2.2.</span> <span class="toc-text"> 第三方Json工具</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-number">2.2.1.</span> <span class="toc-text"> 优势</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%8E%E8%A7%A3%E6%9E%90-%E4%B8%80"><span class="toc-number">2.2.1.1.</span> <span class="toc-text"> 创建与解析 一</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA"><span class="toc-number">2.2.1.1.1.</span> <span class="toc-text"> 创建</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90"><span class="toc-number">2.2.1.1.2.</span> <span class="toc-text"> 解析</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%8E%E8%A7%A3%E6%9E%90-%E4%BA%8C"><span class="toc-number">2.2.1.2.</span> <span class="toc-text"> 创建与解析 二</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-2"><span class="toc-number">2.2.1.2.1.</span> <span class="toc-text"> 创建</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96"><span class="toc-number">2.2.1.2.2.</span> <span class="toc-text"> 读取</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xml%E8%A7%A3%E6%9E%90"><span class="toc-number">2.3.</span> <span class="toc-text"> XML解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xml%E8%A7%A3%E6%9E%90%E4%BA%8C"><span class="toc-number">2.4.</span> <span class="toc-text"> XML解析·二</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#xpath"><span class="toc-number">2.4.1.</span> <span class="toc-text"> XPath</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E5%B1%95rss"><span class="toc-number">2.4.2.</span> <span class="toc-text"> 拓展·RSS</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.gif" data-sizes="auto" alt="Kl_Queen" class="lazyload">
+  <div class="sidebar-author-name">Kl_Queen</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">3</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-icon icon ">
+          
+            
+              <img src="/XIANG.png" alt="home icon" style="width: 1em;">
+            
+          
+        </div>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-icon icon ">
+          
+            
+              <img src="/ANON.png" alt="archives icon" style="width: 1em;">
+            
+          
+        </div>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-icon icon ">
+          
+            
+              <img src="/SOYO.png" alt="about icon" style="width: 1em;">
+            
+          
+        </div>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-icon icon ">
+          
+            
+              <img src="/NANA.png" alt="friend icon" style="width: 1em;">
+            
+          
+        </div>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+    
+  
+</div>
+</div>
+      
+    
+  </div>
+  
+    
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  
+</nav>
+
+    </div>
+    
+    
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+  
+<script src="https://npm.webcache.cn/material-theme@1.0.0/dist/material-theme.umd.js" integrity="sha384-vLev0II0HKFaxkcm+&#x2F;7kX5IGwVFBASkGchU311wmU&#x2F;veIj2bB0UcBkQbW6yw2asK" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.1.1/dist/index.umd.js" integrity="sha384-8LyaidD9GPxQQgLJO&#x2F;WRw&#x2F;O2h3BoNq&#x2F;ApI&#x2F;ecpvM6RsrCz2qP2ppBXUKihP4V&#x2F;2d" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Kl_Queen",
+          title: "File-0x0004-Unity的Json和XML数据存储",
+          url: "http://example.com/2024/03/26/Unity%E7%AC%94%E8%AE%B0-json%E5%92%8Cxml/",
+          excerpt: "",
+          description: "",
+          stripContent: " 这篇文章是我从旧博客搬来的 某些内容可能已过时  数据格式 在一个公司里，老板给了员工A一些任务，叫员工A按时去完成这些任务。  但这个员工A很健忘,经常忘记老板吩咐的任务。  员工A为了防止这种情况再次发生，想出了一种办法：拿出一个小本本在上面按一定的格式记录下每次老板吩咐的任务。  这样，员工A就不会再忘记工作了。  在员工A记录任务时他所使用的固定格式，就叫做————   数据格式-为什么需要数据格式 以前在编写数据时，人们用空格隔开数据,以实现数据的分类，一碰上比较复杂的情况时，这种分",
+          date: "Tue Mar 26 2024 19:36:01 GMT+0800",
+          updated: "Mon Jul 21 2025 22:19:23 GMT+0800",
+          cover: "https://tse4-mm.cn.bing.net/th/id/OIP-C.Svx3axYrtqVsOxlRE3qkRQHaE8?rs=1&pid=ImgDetMain",
+        };
+      </script>
+       
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+        
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+        
+
+
+
+
+
+
+
+
+      
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.8.5' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+  </html>
+

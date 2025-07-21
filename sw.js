@@ -1,4 +1,4 @@
-const VERSION = "1751812352727";const preCache = ["/images/taichi.png","https://tc.z.wiki/autoupload/f/fuaMVbgVWIrwTCzmFqZNP412_FRYNb81z6UPhMWD8iI/20250705/kHnz/2000X1234/bg.jpg","/css/loader.css","/css/style.css","/js/script.js"];const cacheDomain = [
+const VERSION = "1753108221971";const preCache = ["/images/taichi.png","https://tc.z.wiki/autoupload/f/fuaMVbgVWIrwTCzmFqZNP412_FRYNb81z6UPhMWD8iI/20250705/kHnz/2000X1234/bg.jpg","/css/loader.css","/css/style.css","/js/script.js"];const cacheDomain = [
   "fonts.googleapis.com",
   "npm.webcache.cn",
   "unpkg.com",

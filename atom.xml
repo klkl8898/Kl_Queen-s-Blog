@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-06T14:32:11.994Z</updated>
+  <updated>2025-07-21T14:29:51.407Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,15 +21,14 @@
     <link href="http://example.com/2025/07/06/File-0x0003-Unity-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A2%9C%E8%89%B2%E5%92%8C%E5%B8%A6%E6%9C%89%E6%89%93%E5%AD%97%E6%9C%BA%E7%9A%842D%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F/"/>
     <id>http://example.com/2025/07/06/File-0x0003-Unity-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A2%9C%E8%89%B2%E5%92%8C%E5%B8%A6%E6%9C%89%E6%89%93%E5%AD%97%E6%9C%BA%E7%9A%842D%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F/</id>
     <published>2025-07-06T13:55:07.000Z</published>
-    <updated>2025-07-06T14:32:11.994Z</updated>
+    <updated>2025-07-21T14:29:51.407Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;打字机协程&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#打字机协程&quot;&gt;&lt;/a&gt; 打字机协程&lt;/h1&gt;
-&lt;p&gt;原理：for遍历全部需要显示的文字，间隔一定时间用string的Substring截取字符串赋值给text文本&lt;br</summary>
+    <summary type="html">&lt;h1 id=&quot;对话数据so&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#对话数据so&quot;&gt;&lt;/a&gt;</summary>
         
       
     
@@ -39,6 +38,8 @@
     
     
     <category term="Unity2D" scheme="http://example.com/tags/Unity2D/"/>
+    
+    <category term="C#" scheme="http://example.com/tags/C/"/>
     
   </entry>
   
@@ -84,6 +85,34 @@
     
     
     <category term="碎碎念" scheme="http://example.com/tags/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>File-0x0004-Unity的Json和XML数据存储</title>
+    <link href="http://example.com/2024/03/26/Unity%E7%AC%94%E8%AE%B0-json%E5%92%8Cxml/"/>
+    <id>http://example.com/2024/03/26/Unity%E7%AC%94%E8%AE%B0-json%E5%92%8Cxml/</id>
+    <published>2024-03-26T11:36:01.000Z</published>
+    <updated>2025-07-21T14:19:23.504Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;这篇文章是我从旧博客搬来的-某些内容可能已过时&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#这篇文章是我从旧博客搬来的-某些内容可能已过时&quot;&gt;&lt;/a&gt; 这篇文章是我从旧博客搬来的 某些内容可能已过时&lt;/h2&gt;
+&lt;h1</summary>
+        
+      
+    
+    
+    
+    <category term="Unity" scheme="http://example.com/categories/Unity/"/>
+    
+    
+    <category term="Unity2D" scheme="http://example.com/tags/Unity2D/"/>
+    
+    <category term="C#" scheme="http://example.com/tags/C/"/>
     
   </entry>
   
